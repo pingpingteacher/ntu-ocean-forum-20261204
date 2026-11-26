@@ -225,3 +225,15 @@ html[lang=en] .frame:empty::after{content:"Event clip coming soon"}
 .event-organizer h2{font:700 .9rem/1.5 var(--sans);color:var(--muted);margin:0 0 .35rem}
 .organizer-name{font-size:1.1rem;font-weight:700}
 .organizer-social{display:flex;flex-wrap:wrap;gap:.35rem 1rem;list-style:none;padding:0;margin:.6rem 0 0}
+
+.ocean-card-event{margin:-.45rem 0 1.25rem;color:#345754;font-size:.92rem;line-height:1.55}
+.ocean-card-event p{margin:0 0 .2rem}
+.ocean-card-event strong{color:#254d4e}
+.ocean-card-contact{width:fit-content;max-width:100%;border-top:1px solid #baa17f99;margin:1.35rem auto 0;padding-top:.75rem}
+.ocean-card-contact a{display:grid;grid-template-columns:2.4rem minmax(0,1fr) 84px;align-items:center;gap:.65rem;text-align:left;color:#284b4d;text-decoration:none}
+.ocean-card-contact a:hover .contact-text strong{text-decoration:underline}
+.ocean-card-contact img{display:block;width:84px;height:84px;padding:0;border:0;image-rendering:pixelated;background:#fff}
+.contact-polyp{width:2.4rem;height:2.4rem;background:url("assets/coral-polyp-characters.webp") 0 50%/400% 100% no-repeat}
+.contact-text strong{font-family:var(--serif);font-size:.94rem}
+.contact-handle{display:block;color:#426865;font-size:.78rem;line-height:1.4;overflow-wrap:anywhere}
+@media(max-width:390px){.ocean-card-contact a{grid-template-columns:minmax(0,1fr) 78px;gap:.45rem}.contact-polyp{display:none}.ocean-card-contact img{width:78px;height:78px}}

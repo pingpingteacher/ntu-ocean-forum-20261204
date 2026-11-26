@@ -11,9 +11,11 @@ async function renderOceanCard({ image, coralName, entries, language = 'zh-Hant'
     });
   }
 
-  const [source, tidepool] = await Promise.all([
+  const [source, tidepool, contactQr, polypSprite] = await Promise.all([
     loadPainting(typeof image === 'string' ? image : image.currentSrc || image.src),
     loadPainting('assets/tidepool-cover.webp').catch(() => null),
+    loadPainting('assets/ntugsa-contact-qr.png'),
+    loadPainting('assets/coral-polyp-characters.webp').catch(() => null),
   ]);
   await document.fonts?.ready;
 
@@ -93,10 +95,11 @@ async function renderOceanCard({ image, coralName, entries, language = 'zh-Hant'
 
   const width = margin * 2 + columns.length * columnWidth + (columns.length - 1) * columnGap;
   const imageHeight = Math.round(columnWidth * source.naturalHeight / source.naturalWidth);
-  const imageTop = 213;
+  const imageTop = 316;
   const writingTop = imageTop + imageHeight + 151;
   const notesTop = writingTop + 61;
-  const height = Math.max(1170, (entries.length ? notesTop + contentHeight : writingTop - 92) + 105);
+  const footerTop = (entries.length ? notesTop + contentHeight : writingTop - 68) + 48;
+  const height = footerTop + 190;
   const scale = Math.min(1.5, 8192 / width, 8192 / height, Math.sqrt(16000000 / (width * height)));
   canvas.width = Math.floor(width * scale);
   canvas.height = Math.floor(height * scale);
@@ -181,6 +184,13 @@ async function renderOceanCard({ image, coralName, entries, language = 'zh-Hant'
   context.bezierCurveTo(center + 20, 169, center + 29, 185, center + 38, 177);
   context.stroke();
 
+  lettering(english ? 'NTU Youth Ocean Sustainability Forum' : '臺大青年海洋永續座談',
+    center, 207, serifFont(29, 700), '#254d4e', 'center');
+  lettering(english ? 'Organized by NTU Graduate Student Association' : '主辦｜國立臺灣大學研究生協會',
+    center, 246, `550 21px ${sans}`, '#426865', 'center');
+  lettering(english ? '4 December 2026' : '2026.12.04',
+    center, 275, `500 19px ${sans}`, '#426865', 'center');
+
   const imageLeft = center - columnWidth / 2;
   context.fillStyle = '#fffdf7';
   context.fillRect(imageLeft - 9, imageTop - 9, columnWidth + 18, imageHeight + 18);
@@ -203,6 +213,41 @@ async function renderOceanCard({ image, coralName, entries, language = 'zh-Hant'
       }
     });
   }
+
+  const contactTitle = english ? 'Contact the organizer' : '聯絡主辦單位';
+  const contactHandle = 'Threads · @ntugsa.taiwan';
+  const contactTitleFont = serifFont(24, 700);
+  const contactHandleFont = `500 18px ${sans}`;
+  context.font = contactTitleFont;
+  const titleWidth = context.measureText(contactTitle).width;
+  context.font = contactHandleFont;
+  const contactWidth = Math.ceil(Math.max(titleWidth, context.measureText(contactHandle).width));
+  const polypSize = 55;
+  const accentWidth = polypSprite ? polypSize + 16 : 0;
+  const qrSize = 110;
+  const qrGap = 24;
+  const signatureWidth = accentWidth + contactWidth + qrGap + qrSize;
+  const signatureLeft = center - signatureWidth / 2;
+  const contactX = signatureLeft + accentWidth;
+  const qrX = contactX + contactWidth + qrGap;
+  const qrY = footerTop + 32;
+
+  context.strokeStyle = '#baa17f99';
+  context.beginPath();
+  context.moveTo(signatureLeft, footerTop);
+  context.lineTo(signatureLeft + signatureWidth, footerTop);
+  context.stroke();
+
+  if (polypSprite) {
+    context.drawImage(polypSprite, 0, 0, polypSprite.naturalWidth / 4, polypSprite.naturalHeight,
+      signatureLeft, qrY + (qrSize - polypSize) / 2, polypSize, polypSize);
+  }
+  context.save();
+  context.imageSmoothingEnabled = false;
+  context.drawImage(contactQr, qrX, qrY, qrSize, qrSize);
+  context.restore();
+  lettering(contactTitle, contactX, qrY + 29, contactTitleFont, '#284b4d');
+  lettering(contactHandle, contactX, qrY + 63, contactHandleFont, '#426865');
 
   const blob = typeof canvas.toBlob === 'function'
     ? await new Promise(resolve => canvas.toBlob(resolve, 'image/png'))

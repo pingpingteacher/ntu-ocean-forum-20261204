@@ -179,7 +179,7 @@ details{padding:.65rem 0;border-top:1px solid var(--line)}summary{cursor:pointer
 .current-book-authors{margin:.35rem 0 .65rem;color:var(--muted);font-size:.9rem}
 .current-topics{background:radial-gradient(ellipse at right top,#1e465965,transparent 72%),var(--panel)}
 .current-topics h3{font:700 clamp(1.45rem,3vw,1.9rem)/1.2 var(--serif)}
-.current-topics .route{grid-template-columns:repeat(3,minmax(0,1fr))}
+.current-topics .route{grid-template-columns:repeat(2,minmax(0,1fr))}
 .current-topics .route button{min-height:3.1rem;line-height:1.4}
 .current-topics #current-answer{min-height:5.4em}
 @media(max-width:620px){.current-topics #current-answer{min-height:0}}

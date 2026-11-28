@@ -248,7 +248,7 @@ html[lang=en] .frame:empty::after{content:"Event clip coming soon"}
 .speaker-hsu { --portrait-x: 366; --portrait-y: 1033; --portrait-diameter: 154; }
 .panel-speakers {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: .6rem;
   margin: .95rem 0 1rem;
   padding: 0;
